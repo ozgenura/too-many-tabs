@@ -176,7 +176,10 @@ export const projects: Project[] = [
       { url: tmtArchive, label: "archive.png" },
       { url: tmtNotes, label: "notes.png" },
     ],
-    links: [{ label: "live", url: "https://toomanytabs.dev" }],
+    links: [
+      { label: "live", url: "https://toomanytabs.dev" },
+      { label: "repo", url: "https://github.com/ozgenura/too-many-tabs" },
+    ],
     story:
       "It started as a prompt. An AI builder turned it into a working site in an afternoon, and then kept going: an admin panel, authentication, a database, thirteen migrations, an audit log.\n\nWhen I looked at what all of it was for, the answer was that one person — me — could edit six paragraphs from a browser. The screenshot uploader had never held a single image. The audit log was recording my own typing.\n\nSo I took it apart. The content moved into files where it can be reviewed in a diff, the backend shrank to the two things visitors actually write, and roughly half the code stopped existing. The site got smaller, faster, and mine.",
     solved: [
