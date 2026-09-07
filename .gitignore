@@ -42,7 +42,7 @@ playwright-report
 public/sitemap.xml
 
 # Working notes: decisions, backlog, positioning. Ours, not the public repo's.
-NOTES.md
+/NOTES.md
 
 # TanStack build/dev cache
 .tanstack
