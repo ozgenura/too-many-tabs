@@ -45,13 +45,20 @@ export const closedTabs = [
 export const contactEmail = "hello@toomanytabs.dev";
 
 /**
- * The name and the one line that goes with the portrait on about:me.
+ * The name on about:me.
  *
  * The site talks about the work everywhere and never says who is doing it.
  * Someone who wants to hire or book you has to be able to leave with a name.
+ *
+ * Spelled without the diacritic to match the CV and LinkedIn. Consistency
+ * across those three surfaces matters more than either spelling: nobody
+ * checking one against the other should have to pause.
+ *
+ * No title line underneath. Everything a caption could say is already said in
+ * the paragraphs above and the facts below — saying it a third time under the
+ * face would be the only filler on the page.
  */
-export const authorName = "Özgenur Acun";
-export const authorLine = "procurement excellence · istanbul";
+export const authorName = "Ozgenur Acun";
 
 export const aboutIntro = [
   "By day I work in procurement excellence: reading spend data, taking processes apart to see what is actually load-bearing, and proposing the changes worth making. Most of what I build starts right there — a report that took too long, a number nobody could explain, a process held together by copy-paste.",

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageFrame } from "@/components/PageFrame";
 import { CopyEmail } from "@/components/CopyEmail";
-import { aboutIntro, aboutTimeline, aboutFacts, authorLine, authorName, stack } from "@/data/site";
+import { aboutIntro, aboutTimeline, aboutFacts, authorName, stack } from "@/data/site";
 import portrait from "@/assets/projects/ozgenur.jpg";
 
 const title = "about:me — Too Many Tabs";
@@ -65,10 +65,7 @@ function AboutPage() {
             loading="lazy"
             className="w-32 shrink-0 rounded-lg border border-border object-cover sm:w-40"
           />
-          <div>
-            <p className="font-serif text-2xl leading-tight text-foreground">{authorName}</p>
-            <p className="mt-2 font-mono text-sm leading-6 text-muted-foreground">{authorLine}</p>
-          </div>
+          <p className="font-serif text-2xl leading-tight text-foreground">{authorName}</p>
         </section>
 
         <section className="mt-16">
