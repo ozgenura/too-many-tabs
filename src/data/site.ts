@@ -44,6 +44,15 @@ export const closedTabs = [
  */
 export const contactEmail = "hello@toomanytabs.dev";
 
+/**
+ * The name and the one line that goes with the portrait on about:me.
+ *
+ * The site talks about the work everywhere and never says who is doing it.
+ * Someone who wants to hire or book you has to be able to leave with a name.
+ */
+export const authorName = "Özgenur Acun";
+export const authorLine = "procurement excellence · istanbul";
+
 export const aboutIntro = [
   "By day I work in procurement excellence: reading spend data, taking processes apart to see what is actually load-bearing, and proposing the changes worth making. Most of what I build starts right there — a report that took too long, a number nobody could explain, a process held together by copy-paste.",
   "Evenings are the other half, and they are not a side effect of the day job — they are where I learn things, run experiments, and build. Small models, local tools, quick scripts that save an hour a week. I'd rather ship something rough that works than plan something perfect that never opens.",

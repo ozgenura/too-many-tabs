@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageFrame } from "@/components/PageFrame";
 import { CopyEmail } from "@/components/CopyEmail";
-import { aboutIntro, aboutTimeline, aboutFacts, stack } from "@/data/site";
+import { aboutIntro, aboutTimeline, aboutFacts, authorLine, authorName, stack } from "@/data/site";
+import portrait from "@/assets/projects/ozgenur.jpg";
 
 const title = "about:me — Too Many Tabs";
 const description =
@@ -31,7 +32,10 @@ function AboutPage() {
         <h1 className="mt-6 font-serif text-3xl leading-tight text-foreground sm:text-4xl">
           a person with too many tabs
           {/* The cursor stays monospace — it is a terminal artefact, not prose. */}
-          <span aria-hidden className="ml-1 inline-block font-mono text-2xl animate-blink text-accent">
+          <span
+            aria-hidden
+            className="ml-1 inline-block font-mono text-2xl animate-blink text-accent"
+          >
             _
           </span>
         </h1>
@@ -48,6 +52,24 @@ function AboutPage() {
             </div>
           ))}
         </div>
+
+        {/* After the writing, not before it. The page opens with a sentence
+            about the person; the face is the thing you leave with, along with
+            the name the rest of the site never says. */}
+        <section className="mt-16 flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
+          <img
+            src={portrait}
+            alt={authorName}
+            width={562}
+            height={699}
+            loading="lazy"
+            className="w-32 shrink-0 rounded-lg border border-border object-cover sm:w-40"
+          />
+          <div>
+            <p className="font-serif text-2xl leading-tight text-foreground">{authorName}</p>
+            <p className="mt-2 font-mono text-sm leading-6 text-muted-foreground">{authorLine}</p>
+          </div>
+        </section>
 
         <section className="mt-16">
           <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
