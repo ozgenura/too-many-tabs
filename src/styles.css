@@ -1,0 +1,593 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system definition.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-subtle: var(--subtle);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --animate-blink: blink 1.15s step-end infinite;
+  --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+  --animate-shake: shake 0.4s ease-in-out;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-4px);
+  }
+  40% {
+    transform: translateX(4px);
+  }
+  60% {
+    transform: translateX(-2px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Light mode — warm paper. */
+:root {
+  --radius: 0.5rem;
+  /* Peeking card-stack layers: scrim strength, tweak freely. */
+  --peeking-scrim-alpha: 0.5;
+  --peeking-scrim-alpha-hover: 0.4;
+  --background: oklch(0.97 0.008 85);
+  --foreground: oklch(0.24 0.01 60);
+  --card: oklch(0.99 0.006 85);
+  --card-foreground: oklch(0.24 0.01 60);
+  --popover: oklch(0.99 0.006 85);
+  --popover-foreground: oklch(0.24 0.01 60);
+  --primary: oklch(0.56 0.14 55);
+  --primary-foreground: oklch(0.98 0.006 85);
+  --secondary: oklch(0.93 0.008 85);
+  --secondary-foreground: oklch(0.24 0.01 60);
+  --muted: oklch(0.93 0.008 85);
+  --muted-foreground: oklch(0.44 0.008 70);
+  --subtle: oklch(0.53 0.008 70);
+  --accent: oklch(0.56 0.14 55);
+  --accent-foreground: oklch(0.98 0.006 85);
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(0.98 0.005 80);
+  --border: oklch(0.87 0.01 80);
+  --input: oklch(0.87 0.01 80);
+  --ring: oklch(0.56 0.14 55);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.984 0.003 247.858);
+  --sidebar-foreground: oklch(0.129 0.042 264.695);
+  --sidebar-primary: oklch(0.208 0.042 265.755);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.968 0.007 247.896);
+  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
+  --sidebar-border: oklch(0.929 0.013 255.508);
+  --sidebar-ring: oklch(0.704 0.04 256.788);
+}
+
+/* Dark mode — the site's native mood. */
+.dark {
+  --peeking-scrim-alpha: 0.55;
+  --peeking-scrim-alpha-hover: 0.44;
+  --background: oklch(0.16 0.005 60);
+  --foreground: oklch(0.95 0.006 80);
+  --card: oklch(0.21 0.006 60);
+  --card-foreground: oklch(0.95 0.006 80);
+  --popover: oklch(0.21 0.006 60);
+  --popover-foreground: oklch(0.95 0.006 80);
+  --primary: oklch(0.78 0.16 70);
+  --primary-foreground: oklch(0.18 0.02 70);
+  --secondary: oklch(0.26 0.006 60);
+  --secondary-foreground: oklch(0.95 0.006 80);
+  --muted: oklch(0.26 0.006 60);
+  --muted-foreground: oklch(0.71 0.006 90);
+  --subtle: oklch(0.63 0.006 90);
+  --accent: oklch(0.78 0.16 70);
+  --accent-foreground: oklch(0.18 0.02 70);
+  --destructive: oklch(0.6 0.22 25);
+  --destructive-foreground: oklch(0.97 0.005 80);
+  --border: oklch(0.29 0.008 60);
+  --input: oklch(0.29 0.008 60);
+  --ring: oklch(0.78 0.16 70);
+  --sidebar: oklch(0.208 0.042 265.755);
+  --sidebar-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.279 0.041 260.031);
+  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.551 0.027 264.364);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* The tab strip is pinned, so anything scrolled to by an anchor or by the
+     notes search would otherwise land underneath it. */
+  html {
+    scroll-padding-top: 3.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/*
+ * Theme cross-fade: the `theme-shift` class is added to <html> for ~0.5s when
+ * the light/dark or late-night state changes, so color tokens ease instead of
+ * snapping. It is removed afterwards to keep hover states instant.
+ */
+html.theme-shift,
+html.theme-shift *,
+html.theme-shift *::before,
+html.theme-shift *::after {
+  transition:
+    background-color 460ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 460ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 460ms cubic-bezier(0.4, 0, 0.2, 1),
+    fill 460ms cubic-bezier(0.4, 0, 0.2, 1),
+    outline-color 460ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 460ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Deliberately NOT disabled under prefers-reduced-motion: this is a colour
+   cross-fade and nothing moves. Blanking it out was part of what made the
+   site look dead to anyone with the OS setting on. */
+
+/* Accent sweep: a thin warm line pulses across the top on every theme change. */
+html.theme-shift::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-accent) 45%,
+    var(--color-accent) 55%,
+    transparent
+  );
+  animation: accent-sweep 520ms ease-out forwards;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.theme-shift::before {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* This one genuinely travels across the top of the page. Movement goes. */
+  html.theme-shift::before {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+@keyframes accent-sweep {
+  0% {
+    opacity: 0;
+    transform: translateX(-60%) scaleX(0.6);
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(60%) scaleX(1);
+  }
+}
+
+
+
+/* Late night mode: subtle warm shift, applied to <html> after 23:00 local. */
+html.late-night:not(.dark) {
+  --peeking-scrim-alpha: 0.52;
+  --peeking-scrim-alpha-hover: 0.42;
+  --background: oklch(0.94 0.03 82);
+  --card: oklch(0.97 0.024 82);
+  --popover: oklch(0.97 0.024 82);
+  --secondary: oklch(0.9 0.028 82);
+  --muted: oklch(0.9 0.028 82);
+  --border: oklch(0.84 0.03 78);
+  --input: oklch(0.84 0.03 78);
+  --accent: oklch(0.5 0.14 45);
+  --primary: oklch(0.5 0.14 45);
+  --ring: oklch(0.5 0.14 45);
+  --muted-foreground: oklch(0.44 0.026 62);
+  --subtle: oklch(0.53 0.026 62);
+}
+
+
+html.late-night.dark {
+  --peeking-scrim-alpha: 0.58;
+  --peeking-scrim-alpha-hover: 0.46;
+  --background: oklch(0.18 0.03 55);
+  --foreground: oklch(0.94 0.02 80);
+  --card: oklch(0.23 0.035 52);
+  --card-foreground: oklch(0.94 0.02 80);
+  --popover: oklch(0.23 0.035 52);
+  --popover-foreground: oklch(0.94 0.02 80);
+  --secondary: oklch(0.28 0.035 52);
+  --muted: oklch(0.28 0.035 52);
+  --border: oklch(0.34 0.04 50);
+  --input: oklch(0.34 0.04 50);
+  --accent: oklch(0.8 0.16 48);
+  --accent-foreground: oklch(0.19 0.03 50);
+  --primary: oklch(0.8 0.16 48);
+  --primary-foreground: oklch(0.19 0.03 50);
+  --ring: oklch(0.8 0.16 48);
+  --muted-foreground: oklch(0.74 0.03 70);
+  --subtle: oklch(0.66 0.03 70);
+}
+
+
+
+/* ---------------------------------------------------------------------------
+ * Idle "tab sleeping" state: gently desaturates accent + primary text after
+ * a few minutes of no interaction. Wakes back up on any input.
+ */
+html.tab-sleeping {
+  --accent: oklch(0.62 0.05 70);
+  --primary: oklch(0.62 0.05 70);
+  --foreground: oklch(0.62 0.012 70);
+}
+
+html.tab-sleeping,
+html.tab-sleeping body {
+  transition:
+    background-color 1200ms ease,
+    color 1200ms ease;
+}
+
+/* Colour only, so it stays on under reduced motion. */
+
+/* Rare drifting pixel cloud cluster. */
+@keyframes cloud-drift {
+  0% {
+    transform: translateX(-140px);
+  }
+  100% {
+    transform: translateX(calc(100vw + 40px));
+  }
+}
+
+.animate-cloud-drift {
+  animation: cloud-drift 10s linear forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The egg still happens, it just does not travel. Hiding it meant
+     reduced-motion visitors could never find it at all. */
+  .animate-cloud-drift {
+    animation: cloud-settle 700ms ease-out forwards;
+    transform: translateX(24px);
+  }
+}
+
+@keyframes cloud-settle {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
+ * Boring mode: flat, neutral, print-friendly presentation. Amber accent and
+ * the serif display face are swapped for neutral greys and a plain sans.
+ */
+html.boring {
+  --font-serif: ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+  /* Neutral, not blinding. Chroma stays at 0 — that is the whole point of the
+     mode — but the page was pure white (L 1.0) against near-black text, which
+     glares. Paper, not a lightbox. Cards sit a step above the page so they
+     have an edge again; on pure white they were invisible. */
+  --background: oklch(0.97 0 0);
+  --foreground: oklch(0.24 0 0);
+  --card: oklch(0.99 0 0);
+  --card-foreground: oklch(0.24 0 0);
+  --popover: oklch(0.99 0 0);
+  --popover-foreground: oklch(0.24 0 0);
+  --secondary: oklch(0.93 0 0);
+  --secondary-foreground: oklch(0.24 0 0);
+  --muted: oklch(0.93 0 0);
+  --muted-foreground: oklch(0.42 0 0);
+  --subtle: oklch(0.5 0 0);
+  --accent: oklch(0.24 0 0);
+  --accent-foreground: oklch(0.99 0 0);
+  --primary: oklch(0.24 0 0);
+  --primary-foreground: oklch(0.99 0 0);
+  --border: oklch(0.84 0 0);
+  --input: oklch(0.84 0 0);
+  --ring: oklch(0.4 0 0);
+}
+
+/* Boring mode wins over dark, late-night and idle dimming. */
+html.boring.dark,
+html.boring.late-night,
+html.boring.late-night.dark,
+html.boring.tab-sleeping {
+  --background: oklch(0.97 0 0);
+  --foreground: oklch(0.24 0 0);
+  --card: oklch(0.99 0 0);
+  --card-foreground: oklch(0.24 0 0);
+  --muted: oklch(0.93 0 0);
+  --muted-foreground: oklch(0.42 0 0);
+  --subtle: oklch(0.5 0 0);
+  --accent: oklch(0.24 0 0);
+  --primary: oklch(0.24 0 0);
+  --border: oklch(0.84 0 0);
+  --input: oklch(0.84 0 0);
+}
+
+html.boring,
+html.boring *,
+html.boring *::before,
+html.boring *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+html.boring::before {
+  content: none !important;
+}
+
+/* Neutral type: Tailwind's font utilities are compiled, so override directly. */
+html.boring body,
+html.boring body .font-sans,
+html.boring body .font-serif,
+html.boring body .font-mono {
+  font-family: ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .print\:hidden,
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: #000 !important;
+  }
+}
+
+/* Hide native scroll UI (track + arrows) while keeping scroll behavior. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
+ * Motion policy
+ *
+ * Under prefers-reduced-motion the site removes *movement in space* — drift,
+ * sweep, shake, scroll behaviour — and keeps opacity and colour transitions,
+ * which are not what the setting is about. Killing both was making the whole
+ * site look dead to anyone with the OS toggle on, easter eggs included.
+ * ------------------------------------------------------------------------- */
+
+/* The line a browser draws under its tab strip while a page loads. */
+@keyframes nav-progress {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  70% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+.animate-nav-progress {
+  animation: nav-progress 520ms ease-out forwards;
+}
+
+@keyframes nav-progress-static {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* A tab arriving in the strip, and one being replaced. */
+@keyframes tab-open {
+  from {
+    opacity: 0;
+    transform: translateY(3px) scaleX(0.82);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes tab-close {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: scaleX(0.6);
+  }
+}
+
+.animate-tab-open {
+  transform-origin: left center;
+  animation: tab-open 240ms ease-out;
+}
+
+.animate-tab-close {
+  transform-origin: left center;
+  animation: tab-close 220ms ease-in forwards;
+}
+
+@keyframes tab-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes tab-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Same events, no travel: the bar and the tabs fade instead of sweeping. */
+  .animate-nav-progress {
+    animation: nav-progress-static 520ms ease-out forwards;
+  }
+
+  .animate-tab-open {
+    animation: tab-fade-in 240ms ease-out;
+  }
+
+  .animate-tab-close {
+    animation: tab-fade-out 220ms ease-in forwards;
+  }
+}

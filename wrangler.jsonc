@@ -1,0 +1,11 @@
+{
+  // Nitro merges this into the generated .output/server/wrangler.json. Without
+  // it the Worker gets an auto-generated name derived from the git remote.
+  "name": "too-many-tabs",
+
+  // Attaching the domain here rather than in the dashboard keeps it in the
+  // repo: a deploy from a clean checkout produces the same live site.
+  // Apex only on purpose — serving the same pages on www too would just be
+  // duplicate content against the canonical.
+  "routes": [{ "pattern": "toomanytabs.dev", "custom_domain": true }]
+}

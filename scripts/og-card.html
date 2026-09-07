@@ -1,0 +1,158 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>og-card generator</title>
+<!--
+  Source for public/og.png — the 1200x630 social preview card.
+
+  Open this file (any static server), tweak, then hit "download PNG" and drop
+  the result in public/. It draws on a canvas rather than being an image asset
+  so the card stays editable and reads its colors from the same tokens the site
+  uses (src/styles.css, dark theme).
+-->
+<style>
+  body { margin: 0; background: #111; color: #ccc; font: 13px ui-monospace, monospace; padding: 20px; }
+  canvas { width: 600px; height: 315px; border: 1px solid #333; display: block; margin-bottom: 12px; }
+  button { font: inherit; background: transparent; color: #f0a24a; border: 1px solid #f0a24a80; padding: 6px 12px; cursor: pointer; }
+</style>
+<canvas id="c" width="1200" height="630"></canvas>
+<button id="dl">download PNG</button>
+<span id="status"></span>
+
+<script type="module">
+  // --- brand tokens, copied from src/styles.css (.dark) ----------------------
+  const BG = "oklch(0.16 0.005 60)";
+  const CARD = "oklch(0.21 0.006 60)";
+  const BORDER = "oklch(0.29 0.008 60)";
+  const FG = "oklch(0.95 0.006 80)";
+  const MUTED = "oklch(0.71 0.006 90)";
+  const SUBTLE = "oklch(0.63 0.006 90)";
+  const ACCENT = "oklch(0.78 0.16 70)";
+
+  const TITLE = "Too Many Tabs";
+  const TAGLINE_PREFIX = "build without ";
+  const TAGLINE_WORD = "guesswork";
+  const DOMAIN = "toomanytabs.dev";
+  const TABS = ["too-many-tabs", "notes.md", "about:me"];
+
+  /** Pulls the real woff2 files out of a Google Fonts stylesheet. */
+  async function loadFont(family, weight, cssFamily) {
+    const url = `https://fonts.googleapis.com/css2?family=${cssFamily}&display=swap`;
+    const css = await fetch(url).then((r) => r.text());
+    // Last @font-face block is the latin subset.
+    const srcs = [...css.matchAll(/src:\s*url\((https:[^)]+\.woff2)\)/g)].map((m) => m[1]);
+    const face = new FontFace(family, `url(${srcs.at(-1)})`, { weight: String(weight) });
+    document.fonts.add(await face.load());
+  }
+
+  function roundedTopRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x, y + h);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h);
+  }
+
+  function draw(ctx) {
+    const W = 1200, H = 630, PAD = 88;
+
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, W, H);
+
+    // --- decorative tab strip ------------------------------------------------
+    const stripH = 74;
+    ctx.font = "500 19px 'JetBrains Mono', ui-monospace, monospace";
+    ctx.textBaseline = "middle";
+    let x = PAD;
+    TABS.forEach((label, i) => {
+      const active = i === 0;
+      const w = ctx.measureText(label).width + 74;
+      roundedTopRect(ctx, x, stripH - 46, w, 46, 10);
+      ctx.fillStyle = active ? CARD : "transparent";
+      if (active) ctx.fill();
+      ctx.strokeStyle = BORDER;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(x + 26, stripH - 23, 5, 0, Math.PI * 2);
+      ctx.fillStyle = active ? ACCENT : BORDER;
+      ctx.fill();
+
+      ctx.fillStyle = active ? MUTED : SUBTLE;
+      ctx.fillText(label, x + 44, stripH - 22);
+      x += w + 10;
+    });
+    ctx.strokeStyle = BORDER;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(0, stripH);
+    ctx.lineTo(W, stripH);
+    ctx.stroke();
+
+    // --- title ---------------------------------------------------------------
+    ctx.fillStyle = FG;
+    ctx.font = "400 124px 'Instrument Serif', Georgia, serif";
+    ctx.fillText(TITLE, PAD, 268);
+
+    // --- rotating-word line, pinned to the anchor variant --------------------
+    ctx.font = "400 38px 'JetBrains Mono', ui-monospace, monospace";
+    ctx.fillStyle = MUTED;
+    ctx.fillText(TAGLINE_PREFIX, PAD, 356);
+    const prefixW = ctx.measureText(TAGLINE_PREFIX).width;
+    ctx.fillStyle = ACCENT;
+    ctx.fillText(TAGLINE_WORD, PAD + prefixW, 356);
+    const wordW = ctx.measureText(TAGLINE_WORD).width;
+    ctx.fillStyle = MUTED;
+    ctx.fillText(".", PAD + prefixW + wordW, 356);
+    // the site's blinking caret
+    ctx.fillStyle = ACCENT;
+    ctx.globalAlpha = 0.8;
+    ctx.fillRect(PAD + prefixW + wordW + 22, 336, 15, 40);
+    ctx.globalAlpha = 1;
+
+    // --- manifesto -----------------------------------------------------------
+    ctx.strokeStyle = ACCENT;
+    ctx.globalAlpha = 0.6;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(PAD, 428);
+    ctx.lineTo(PAD, 512);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    ctx.fillStyle = FG;
+    ctx.font = "italic 400 30px 'Instrument Serif', Georgia, serif";
+    ctx.fillText("If it's not open in a tab, it doesn't exist.", PAD + 28, 452);
+    ctx.fillText("I don't bookmark ideas; I build them.", PAD + 28, 492);
+
+    // --- footer --------------------------------------------------------------
+    ctx.font = "400 22px 'JetBrains Mono', ui-monospace, monospace";
+    ctx.fillStyle = SUBTLE;
+    ctx.fillText(DOMAIN, PAD, 566);
+  }
+
+  const canvas = document.getElementById("c");
+  const ctx = canvas.getContext("2d");
+  const status = document.getElementById("status");
+
+  await Promise.all([
+    loadFont("Instrument Serif", 400, "Instrument+Serif:ital@0;1"),
+    loadFont("JetBrains Mono", 400, "JetBrains+Mono:wght@400;500"),
+  ]).catch((e) => {
+    status.textContent = "font load failed, using fallbacks: " + e.message;
+  });
+  draw(ctx);
+  status.textContent = " rendered";
+
+  document.getElementById("dl").onclick = () => {
+    const a = document.createElement("a");
+    a.download = "og.png";
+    a.href = canvas.toDataURL("image/png");
+    a.click();
+  };
+
+  // Used by the one-off local exporter (see scripts/export-og.ts).
+  window.__ogDataUrl = () => canvas.toDataURL("image/png");
+</script>

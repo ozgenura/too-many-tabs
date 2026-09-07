@@ -1,0 +1,9 @@
+# Keep line endings LF in the repository regardless of checkout platform.
+# src/content/notes.md is parsed as raw text at build time, so a CRLF checkout
+# used to break it — parseNotes normalizes now, but the repo stays LF anyway.
+* text=auto eol=lf
+
+# Binary assets must never be touched.
+*.png binary
+*.jpg binary
+*.ico binary

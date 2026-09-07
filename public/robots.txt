@@ -1,0 +1,8 @@
+# Crawling is allowed on purpose. Whether pages may be *indexed* is decided by
+# the robots meta tag (see src/data/site-config.ts) — a crawler has to be able
+# to fetch a page to read that tag.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://toomanytabs.dev/sitemap.xml
