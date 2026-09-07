@@ -16,7 +16,7 @@ import { SITE_URL } from "@/data/site-config";
 
 const title = `Too Many Tabs — ${tagline}`;
 const description =
-  "Personal project shelf of someone who works in procurement excellence: spend data, process, data and AI experiments, and things shipped instead of bookmarked.";
+  "Personal project shelf of someone who works in procurement excellence: spend analysis, process work, data and AI experiments, and things shipped instead of bookmarked.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
