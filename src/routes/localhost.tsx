@@ -6,8 +6,7 @@ import { TabNumberLabel } from "@/components/TabNumberLabel";
 import { previewProject, projects } from "@/data/projects";
 
 const title = "localhost:5173 — Too Many Tabs";
-const description =
-  "The dev preview tab: whatever is being built runs here before it is real.";
+const description = "The dev preview tab: whatever is being built runs here before it is real.";
 
 export const Route = createFileRoute("/localhost")({
   head: () => ({
@@ -44,7 +43,14 @@ function LocalhostPage() {
           {project ? "running" : "idle"}
         </p>
 
-        {project ? <Mounted project={project} /> : <Idle stillOpen={stillOpen.length} />}
+        {project ? <Mounted project={project} /> : <Idle />}
+
+        {/* Shared on purpose. This paragraph is the only thing that explains
+            why the tab exists, and it used to live inside the idle branch —
+            so the moment something was actually mounted, the explanation
+            disappeared and a first-time visitor landed on a running preview
+            with no idea what they were looking at. */}
+        <WhatThisTabIs mounted={Boolean(project)} stillOpen={stillOpen.length} />
       </div>
     </PageFrame>
   );
@@ -77,7 +83,7 @@ function Mounted({ project }: { project: NonNullable<typeof previewProject> }) {
         </p>
       ) : null}
 
-      <p className="mt-12 border-t border-border/60 pt-8 font-mono text-[11px] text-muted-foreground">
+      <p className="mt-10 font-mono text-[11px] text-muted-foreground">
         it is not finished and that is the point.{" "}
         <Link
           to="/projects/$slug"
@@ -91,22 +97,29 @@ function Mounted({ project }: { project: NonNullable<typeof previewProject> }) {
   );
 }
 
-function Idle({ stillOpen }: { stillOpen: number }) {
+function Idle() {
   return (
-    <>
-      <h1 className="mt-8 max-w-xl font-serif text-3xl leading-tight text-foreground sm:text-4xl">
-        Nothing is mounted right now.
-      </h1>
-      <p className="mt-5 max-w-lg font-mono text-xs leading-6 text-muted-foreground">
-        [ dev server ] no output · {stillOpen} tab{stillOpen === 1 ? "" : "s"} still open · next
-        build pending
+    <h1 className="mt-8 max-w-xl font-serif text-3xl leading-tight text-foreground sm:text-4xl">
+      Nothing is mounted right now.
+    </h1>
+  );
+}
+
+function WhatThisTabIs({ mounted, stillOpen }: { mounted: boolean; stillOpen: number }) {
+  const tabs = `${stillOpen} tab${stillOpen === 1 ? "" : "s"} still open`;
+
+  return (
+    <div className="mt-12 border-t border-border/60 pt-8">
+      <p className="max-w-lg font-mono text-xs leading-6 text-muted-foreground">
+        [ dev server ] {mounted ? "1 preview mounted" : "no output"} · {tabs}
+        {mounted ? null : " · next build pending"}
       </p>
-      <p className="mt-8 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+      <p className="mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
         This tab is where whatever I am building runs before it is real — the half-broken version,
         live, while it is still half-broken. When something is far enough along to be embarrassing
         in public, it shows up here first.
       </p>
-      <p className="mt-10 font-mono text-[11px] text-muted-foreground">
+      <p className="mt-8 font-mono text-[11px] text-muted-foreground">
         <Link
           to="/all-projects"
           className="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
@@ -114,6 +127,6 @@ function Idle({ stillOpen }: { stillOpen: number }) {
           see what is still open →
         </Link>
       </p>
-    </>
+    </div>
   );
 }
