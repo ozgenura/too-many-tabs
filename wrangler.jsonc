@@ -3,6 +3,13 @@
   // it the Worker gets an auto-generated name derived from the git remote.
   "name": "too-many-tabs",
 
+  // Pinned, not generated. Nitro defaults this to the local "today", which is
+  // a day ahead of UTC after 21:00 in Istanbul — Cloudflare then rejects the
+  // deploy with "Can't set compatibility date in the future". A fixed date also
+  // makes the build reproducible: the runtime behaviour stops depending on the
+  // day someone happens to deploy.
+  "compatibility_date": "2026-09-06",
+
   // Attaching the domain here rather than in the dashboard keeps it in the
   // repo: a deploy from a clean checkout produces the same live site.
   // Apex only on purpose — serving the same pages on www too would just be

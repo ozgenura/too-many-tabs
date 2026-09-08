@@ -1,5 +1,23 @@
 import { useState } from "react";
-import type { Screenshot } from "@/data/projects";
+import { getProject, type Screenshot } from "@/data/projects";
+
+/**
+ * What goes in the address bar of the fake browser chrome.
+ *
+ * It used to render `{slug}.app`, which is a domain none of these projects are
+ * at — an invented fact sitting on the most-viewed surface of the site. Now it
+ * shows the real host when there is a live link, and the slug on its own when
+ * there is not.
+ */
+function addressLabel(slug: string): string {
+  const live = getProject(slug)?.links?.[0]?.url;
+  if (!live) return slug;
+  try {
+    return new URL(live).host.replace(/^www./, "");
+  } catch {
+    return slug;
+  }
+}
 
 type ProjectScreenshotProps = {
   slug: string;
@@ -33,7 +51,10 @@ export function ProjectScreenshot({
     >
       <div className="flex items-center gap-2 border-b border-border bg-card px-3 py-1.5">
         {showTabs ? (
-          <nav aria-label={`${name} screenshots`} className="flex min-w-0 items-center gap-1 overflow-x-auto">
+          <nav
+            aria-label={`${name} screenshots`}
+            className="flex min-w-0 items-center gap-1 overflow-x-auto"
+          >
             {shots.map((shot, i) => (
               <button
                 key={shot.url + i}
@@ -44,7 +65,6 @@ export function ProjectScreenshot({
                   "flex shrink-0 items-center gap-1.5 rounded-t px-2 py-0.5 font-mono text-[10px] transition-colors " +
                   (i === active ? "text-accent" : "text-muted-foreground hover:text-accent")
                 }
-
               >
                 <span
                   className={
@@ -64,7 +84,7 @@ export function ProjectScreenshot({
               aria-hidden="true"
             />
             <span className="min-w-0 truncate font-mono text-[10px] text-muted-foreground">
-              {slug}.app
+              {addressLabel(slug)}
             </span>
           </>
         )}

@@ -7,6 +7,7 @@ import tmtNotes from "@/assets/projects/tmt-notes.jpg";
 import cbRadar from "@/assets/projects/cb-radar.jpg";
 import cbSegments from "@/assets/projects/cb-segments.jpg";
 import cbEvaluation from "@/assets/projects/cb-evaluation.jpg";
+import coProphecy from "@/assets/projects/co-prophecy.jpg";
 
 /**
  * Progress, and only progress. Placement is `featured` — a project is not
@@ -202,19 +203,21 @@ export const projects: Project[] = [
     blurb:
       "A satirical oracle for corporate life. Ask it anything; it answers like a steering committee.",
     status: "in progress",
-    stack: [],
+    // Read off the codebase, not written by hand — change freely.
+    stack: ["tanstack start", "cloudflare workers", "vercel ai sdk", "typescript"],
+    links: [{ label: "live", url: "https://oracle.toomanytabs.dev" }],
+    screenshots: [{ url: coProphecy, label: "prophecy.png" }],
     story:
       "Still local. It exists because the answers people actually get at work are already absurd — this only removes the meeting.",
     solved: [],
     learned: [],
     featured: false,
-    // Deploy it somewhere that allows framing, then uncomment: /localhost picks
-    // up whichever project carries `preview` and mounts it.
-    // preview: {
-    //   url: "https://…",
-    //   note: "An oracle for corporate life. It has never once said no.",
-    //   action: "ask it whether this meeting could have been an email",
-    // },
+    // Whichever project carries `preview` is the one /localhost mounts.
+    preview: {
+      url: "https://oracle.toomanytabs.dev",
+      note: "An oracle for corporate life. It has never once said no.",
+      action: "ask it whether this meeting could have been an email",
+    },
   },
   {
     slug: "untitled-travel-app",
