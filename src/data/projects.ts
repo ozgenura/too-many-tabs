@@ -55,6 +55,14 @@ export type ProjectPreview = {
   note: string;
   /** A suggested first move — an embedded demo with no prompt is a dead end. */
   action?: string;
+  /**
+   * What it costs me to let you press the button, said out loud.
+   *
+   * A live demo that calls a paid API has to be capped, and a visitor who hits
+   * that cap without warning reads it as the thing being broken. Saying the
+   * limit up front turns it from a failure into a fact about the project.
+   */
+  limit?: string;
 };
 
 export type Project = {
@@ -208,7 +216,7 @@ export const projects: Project[] = [
     links: [{ label: "live", url: "https://oracle.toomanytabs.dev" }],
     screenshots: [{ url: coProphecy, label: "prophecy.png" }],
     story:
-      "Still local. It exists because the answers people actually get at work are already absurd — this only removes the meeting.",
+      "Still a local experiment that happens to have a URL — it is deployed so it can be tried, not because it is finished. It exists because the answers people actually get at work are already absurd; this only removes the meeting.",
     solved: [],
     learned: [],
     featured: false,
@@ -217,6 +225,9 @@ export const projects: Project[] = [
       url: "https://oracle.toomanytabs.dev",
       note: "An oracle for corporate life. It has never once said no.",
       action: "ask it whether this meeting could have been an email",
+      // TODO: replace with the real per-visitor number once you tell me it —
+      // "three prophecies per visitor" beats "rate limited" every time.
+      limit: "it is rate limited, and the budget is mine.",
     },
   },
   {

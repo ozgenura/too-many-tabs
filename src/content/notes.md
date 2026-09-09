@@ -2,6 +2,22 @@
 
 ---
 
+## 2026-09-08 — the first thing it said
+
+Started at midnight, finished at half past one. An hour and twenty-five minutes
+of chasing a bug that turned out to be an environment variable in the wrong
+place. Filed under Tuesday, since that is whose problem it was.
+
+Deployed it, and asked the oracle its first live question.
+
+It told me I had touched the environment variables, and that HR would now circle
+me with a 360 review disguised as curiosity. Danger level: maximum.
+
+I had not told it what I was doing. It just knows what a Tuesday night looks
+like.
+
+---
+
 ## 2026-09-05 — the context, not the person
 
 Came across this last December and still turn it over: Vodden & Arman,
