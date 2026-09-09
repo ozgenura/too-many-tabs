@@ -225,9 +225,10 @@ export const projects: Project[] = [
       url: "https://oracle.toomanytabs.dev",
       note: "An oracle for corporate life. It has never once said no.",
       action: "ask it whether this meeting could have been an email",
-      // TODO: replace with the real per-visitor number once you tell me it —
-      // "three prophecies per visitor" beats "rate limited" every time.
-      limit: "it is rate limited, and the budget is mine.",
+      // The real number, not "rate limited". A visitor who knows they have
+      // three left spends them; one told the thing is "limited" assumes it is
+      // broken the first time it says no.
+      limit: "three prophecies per visitor, per day. the budget is mine.",
     },
   },
   {
