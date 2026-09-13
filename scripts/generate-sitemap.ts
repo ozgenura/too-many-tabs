@@ -13,8 +13,9 @@ import { projects } from "../src/data/projects";
 const SITE_URL = (process.env["VITE_SITE_URL"] ?? "https://toomanytabs.dev").replace(/\/$/, "");
 
 /**
- * Deliberately excluded: /localhost (serves its own noindex) and
- * /err-too-many-tabs (the 404 game — reached by accident, not by search).
+ * Deliberately excluded, all three of which also serve their own noindex:
+ * /localhost (whatever is mounted is unfinished by definition), /incognito,
+ * and /err-too-many-tabs (the 404 game — reached by accident, not by search).
  */
 const STATIC_PATHS = ["/", "/work", "/about", "/all-projects", "/notes", "/draft", "/press-kit"];
 
