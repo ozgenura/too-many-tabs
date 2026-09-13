@@ -16,9 +16,14 @@ export const SITE_NAME = "Too Many Tabs";
 export const OG_IMAGE = "/og.png";
 
 /**
- * Search engines are opted *out* by default: while the site is still being
- * filled in, an accidental index is expensive to undo. Set
- * VITE_ALLOW_INDEXING="true" on the production build at launch.
+ * Search engines are opted *out* by default: an accidental index is expensive
+ * to undo, so a build has to ask for it. Production has asked since the launch
+ * build of 2026-09-13; `.env.example` stays "false" so nobody's local or forked
+ * build quietly competes with the real site for the same pages.
+ *
+ * Turning this on does not index everything. Pages that opt out for their own
+ * reasons — /localhost, /incognito, /err-too-many-tabs — set their own robots
+ * meta and are absent from sitemap.xml.
  */
 export const INDEXING_ENABLED = import.meta.env["VITE_ALLOW_INDEXING"] === "true";
 
