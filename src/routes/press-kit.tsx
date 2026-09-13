@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { absoluteUrl } from "@/data/site-config";
 import { PageFrame } from "@/components/PageFrame";
 import { ProjectScreenshotStack } from "@/components/ProjectScreenshotStack";
 import { ProjectScreenshot } from "@/components/ProjectScreenshot";
-import {
-  projects,
-  getScreenshots,
-  statusStyles,
-  statusDot,
-  type Status,
-} from "@/data/projects";
+import { projects, getScreenshots, statusStyles, statusDot, type Status } from "@/data/projects";
 
 const title = "press-kit — Too Many Tabs";
 const description =
@@ -25,6 +20,7 @@ export const Route = createFileRoute("/press-kit")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
+    links: [{ rel: "canonical", href: absoluteUrl("/press-kit") }],
   }),
   component: PressKitPage,
 });
@@ -230,11 +226,7 @@ function PressKitPage() {
             project card — fanned screenshot stack
           </p>
           <div className="group mt-2 rounded-lg border border-border bg-card p-4">
-            <ProjectScreenshotStack
-              slug={project.slug}
-              name={project.name}
-              screenshots={shots}
-            />
+            <ProjectScreenshotStack slug={project.slug} name={project.name} screenshots={shots} />
             <div className="mt-4">
               <h3 className="font-serif text-xl text-foreground">{project.name}</h3>
               <p className="mt-1 text-sm leading-6 text-muted-foreground">{project.blurb}</p>

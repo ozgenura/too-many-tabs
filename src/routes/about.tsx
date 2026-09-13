@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { absoluteUrl } from "@/data/site-config";
 import { PageFrame } from "@/components/PageFrame";
 import { CopyEmail } from "@/components/CopyEmail";
 import { aboutIntro, aboutTimeline, aboutFacts, authorName, stack } from "@/data/site";
@@ -18,6 +19,7 @@ export const Route = createFileRoute("/about")({
       { property: "og:type", content: "profile" },
       { name: "twitter:card", content: "summary" },
     ],
+    links: [{ rel: "canonical", href: absoluteUrl("/about") }],
   }),
   component: AboutPage,
 });

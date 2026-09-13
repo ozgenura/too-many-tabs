@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { absoluteUrl } from "@/data/site-config";
 import { PageFrame } from "@/components/PageFrame";
 import {
   FEATURED_LIMIT,
@@ -24,16 +25,14 @@ export const Route = createFileRoute("/all-projects")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
+    links: [{ rel: "canonical", href: absoluteUrl("/all-projects") }],
   }),
   component: AllProjectsPage,
 });
 
 function AllProjectsPage() {
   const projects = [...allProjects].sort(byTabNumberDesc);
-  const featured = Math.min(
-    projects.filter((p) => p.featured !== false).length,
-    FEATURED_LIMIT,
-  );
+  const featured = Math.min(projects.filter((p) => p.featured !== false).length, FEATURED_LIMIT);
 
   return (
     <PageFrame>
@@ -43,8 +42,8 @@ function AllProjectsPage() {
           Every tab in the archive — including the ones that never made it to the homepage.
         </p>
         <p className="mt-4 font-mono text-[11px] text-muted-foreground">
-          {projects.length} projects · {featured} on the homepage ·{" "}
-          {projects.length - featured} archive only
+          {projects.length} projects · {featured} on the homepage · {projects.length - featured}{" "}
+          archive only
         </p>
 
         <ol className="mt-12 space-y-8 border-t border-border/60 pt-8">
@@ -57,11 +56,7 @@ function AllProjectsPage() {
                 className="group block"
               >
                 <h2 className="flex flex-wrap items-baseline gap-2 leading-tight">
-                  <TabNumberLabel
-                    project={project}
-                    asLink={false}
-                    className="text-sm"
-                  />
+                  <TabNumberLabel project={project} asLink={false} className="text-sm" />
                   <span className="font-mono text-sm text-muted-foreground" aria-hidden="true">
                     —
                   </span>

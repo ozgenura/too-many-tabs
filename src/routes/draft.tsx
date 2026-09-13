@@ -4,6 +4,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { PageFrame } from "@/components/PageFrame";
 import { draftIdeas, graduatedDrafts } from "@/data/drafts";
 import { getProject, tabLabel } from "@/data/projects";
+import { absoluteUrl } from "@/data/site-config";
 import { openInquiryWith } from "@/hooks/use-inquiry";
 
 const title = "untitled draft — Too Many Tabs";
@@ -20,6 +21,7 @@ export const Route = createFileRoute("/draft")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
+    links: [{ rel: "canonical", href: absoluteUrl("/draft") }],
   }),
   component: DraftPage,
 });

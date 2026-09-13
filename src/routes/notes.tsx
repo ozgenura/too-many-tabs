@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { absoluteUrl } from "@/data/site-config";
 import { useEffect, useMemo, useState } from "react";
 import { PageFrame } from "@/components/PageFrame";
 import { Markdown, extractHeadings } from "@/components/Markdown";
@@ -19,6 +20,7 @@ export const Route = createFileRoute("/notes")({
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary" },
     ],
+    links: [{ rel: "canonical", href: absoluteUrl("/notes") }],
   }),
   component: NotesPage,
 });
