@@ -8,6 +8,9 @@ import cbRadar from "@/assets/projects/cb-radar.jpg";
 import cbSegments from "@/assets/projects/cb-segments.jpg";
 import cbEvaluation from "@/assets/projects/cb-evaluation.jpg";
 import coProphecy from "@/assets/projects/co-prophecy.jpg";
+import cbpOverview from "@/assets/projects/cbp-overview.jpg";
+import cbpRadar from "@/assets/projects/cbp-radar.jpg";
+import cbpSim from "@/assets/projects/cbp-sim.jpg";
 
 /**
  * Progress, and only progress. Placement is `featured` — a project is not
@@ -92,6 +95,16 @@ export type Project = {
   links?: ProjectLink[];
   /** Set this on the one project that should be running on /localhost. */
   preview?: ProjectPreview;
+
+  /**
+   * Another tab this one came out of, or led to.
+   *
+   * Deliberately not a `ProjectLink`: those are outbound, and render with a
+   * new-tab arrow. This is a move within the archive, so it has to look like
+   * one. Set it on both ends — each side writes its own sentence, because the
+   * relationship reads differently depending on which tab you arrived at.
+   */
+  related?: { slug: string; note: string } | undefined;
 };
 
 /** Normalizes screenshots to at most 3 entries with default view-N.png labels. */
@@ -170,6 +183,10 @@ export const projects: Project[] = [
       "The thresholds had to be derived, not chosen — a traffic light with invented cutoffs is decoration",
       "Power BI was the plan and Excel was the deadline; the analysis had to survive the downgrade, which meant the numbers had to be right before the tool was chosen",
     ],
+    related: {
+      slug: "creditboard-pbip",
+      note: "the report that missed this deadline became its own tab",
+    },
   },
   {
     slug: "too-many-tabs",
@@ -255,6 +272,47 @@ export const projects: Project[] = [
       "The escape hatch turned out to be the main road",
       "The same rule keeps surfacing in my work: don't let a system present a guess as a measurement",
     ],
+  },
+  {
+    slug: "creditboard-pbip",
+    tabNumber: 6,
+    openedAt: "2026-09",
+    name: "CreditBoard.pbip",
+    blurb:
+      "Eight pages of credit risk, generated rather than drawn. Four Python scripts compile the model, a hundred measures and every page. Twice, so the light and dark versions cannot drift apart.",
+    status: "shipped",
+    stack: ["python", "lightgbm", "pandas", "power bi (pbip)", "dax"],
+    // app.powerbi.com, not app.fabric.microsoft.com. The same token serves the
+    // same report from both hosts; this one is the name the report runs under,
+    // and it is what ProjectScreenshot derives its address label from.
+    links: [
+      {
+        label: "live",
+        url: "https://app.powerbi.com/view?r=eyJrIjoiMmI2MWI0MTAtMjQ2Yy00YjI1LWI3MjUtZmEwZTMxYmI4NDU4IiwidCI6IjhmOTA5Nzc5LTE1ZGQtNGQ5YS04ZDNkLWE2ZDczMmJhYWI0MCIsImMiOjl9",
+      },
+    ],
+    screenshots: [
+      { url: cbpOverview, label: "overview.png" },
+      { url: cbpRadar, label: "radar.png" },
+      { url: cbpSim, label: "simulator.png" },
+    ],
+    story:
+      "CreditBoard was handed in without the report it was supposed to have. Power BI was the plan and Excel was the deadline, so the analysis went out as a spreadsheet. Three months later the report exists, and nobody drew it.\n\nFour Python scripts produce it. One prepares the six Home Credit tables, one trains the default model, one writes the semantic model with a hundred-odd measures, and one writes the report: eight pages, each built twice so there is a dark version, phone layouts for the three anyone would open on a phone, and the page backgrounds drawn in code. By hand that is twenty-four pages to keep in sync. As a build it is one.\n\nThe rule from the Excel model came with it. No number in the report is typed. The line that says the 8x+ band defaults below the portfolio average is a measure, so the data and the prose cannot disagree.\n\nThen I checked my own work. The three behavioural signals I had picked by hand rank risk at AUC 0.57, where a coin flip is 0.50 and the model is 0.78. So the traffic light now runs on the model's grade and the signals only explain it. The red band went from 2,535 clients defaulting at 18.3% to 2,314 defaulting at 27.8%. The original three are still on the page, in a panel labelled kept for comparison, because the comparison is the point.\n\nThe page I would open first is the Approval Simulator. Approve the safest 80% by model score and the default rate falls from 8.1% to 4.5%, keeping out 55% of defaulters. It also turns away 47,801 people who would have repaid. Both numbers sit on the same screen, because a model that only reports the half it improves is a sales deck.",
+    solved: [
+      "Eight pages, light and dark, plus three phone layouts, out of one build: twenty-four pages of upkeep collapsed into four scripts",
+      "A radar that concentrates 2,314 clients into a band defaulting at 27.8%, against a portfolio average of 8.1%",
+      "Every figure in the report's prose is a measure, so the text cannot drift from the numbers underneath it",
+    ],
+    learned: [
+      "Checking my own heuristic was the most useful hour in it: three hand-picked signals ranked risk barely better than a coin flip, and finding that out is what produced a radar worth shipping",
+      "A report that hides the cost of its own recommendation is a brochure, so the simulator shows the 47,801 good clients a strict policy turns away next to the defaulters it keeps out",
+      "Generating the report instead of drawing it is what makes the dark version trustworthy: it is the same code with different colours, not a second file someone forgot to update",
+    ],
+    featured: true,
+    related: {
+      slug: "creditboard",
+      note: "this started as the half of CreditBoard that missed the deadline",
+    },
   },
 ];
 

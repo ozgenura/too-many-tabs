@@ -1,13 +1,12 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { PageFrame } from "@/components/PageFrame";
 import { ProjectScreenshot } from "@/components/ProjectScreenshot";
-import { getProject, statusStyles, getScreenshots } from "@/data/projects";
+import type { Project } from "@/data/projects";
+import { getProject, statusStyles, getScreenshots, tabLabel } from "@/data/projects";
 import { SITE_NAME, absoluteUrl } from "@/data/site-config";
 import { TabNumberLabel } from "@/components/TabNumberLabel";
 import { CopyProjectLink } from "@/components/CopyProjectLink";
 import { ProjectLinks } from "@/components/ProjectLinks";
-
-
 
 export const Route = createFileRoute("/projects/$slug")({
   // An unknown slug is a real 404, not a page that says "nothing here" with a
@@ -69,12 +68,43 @@ export const Route = createFileRoute("/projects/$slug")({
   component: ProjectDetail,
 });
 
+/**
+ * A move to the neighbouring tab, placed after the story rather than beside
+ * the outbound links.
+ *
+ * Two projects can share an origin without sharing a page: splitting them
+ * keeps each one readable, and this line is what stops the split from losing
+ * the connection. It renders nothing when the other tab has gone, so deleting
+ * a project never leaves a link into the 404.
+ */
+function RelatedTab({ related }: { related: Project["related"] }) {
+  const other = related ? getProject(related.slug) : undefined;
+  if (!related || !other) return null;
+
+  return (
+    <div className="mt-16 border-t border-border/60 pt-8">
+      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+        next to this one
+      </p>
+      <Link to="/projects/$slug" params={{ slug: other.slug }} className="group mt-4 block">
+        <span className="font-serif text-xl text-foreground transition-colors group-hover:text-accent">
+          {other.name}
+        </span>
+        <span className="ml-3 font-mono text-[11px] text-muted-foreground">{tabLabel(other)}</span>
+        <span className="mt-1 block max-w-lg text-sm leading-6 text-muted-foreground">
+          {related.note}{" "}
+          <span className="text-accent" aria-hidden>
+            →
+          </span>
+        </span>
+      </Link>
+    </div>
+  );
+}
+
 function ProjectDetail() {
   // The loader throws notFound() for an unknown slug, so by here it exists.
   const { project } = Route.useLoaderData();
-
-
-
 
   return (
     <PageFrame>
@@ -109,7 +139,10 @@ function ProjectDetail() {
             to="/localhost"
             className="mt-6 inline-flex items-center gap-2 rounded-md border border-border px-3 py-1.5 font-mono text-[11px] text-muted-foreground transition-colors hover:border-accent/50 hover:text-accent"
           >
-            <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent motion-safe:animate-pulse" />
+            <span
+              aria-hidden
+              className="h-1.5 w-1.5 rounded-full bg-accent motion-safe:animate-pulse"
+            />
             running at localhost:5173 →
           </Link>
         ) : null}
@@ -122,49 +155,48 @@ function ProjectDetail() {
           aspect="aspect-[16/9]"
         />
 
-
         <p className="mt-10 text-base leading-relaxed text-foreground sm:text-lg">
           {project.story}
         </p>
 
         <div className="mt-14 grid gap-10 sm:grid-cols-2">
           {project.solved.length ? (
-          <section>
-
-            <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              what it solved
-            </h2>
-            <ul className="mt-5 space-y-3">
-              {project.solved.map((item) => (
-                <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
-                  <span aria-hidden className="text-accent/70">
-                    ·
-                  </span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
+            <section>
+              <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                what it solved
+              </h2>
+              <ul className="mt-5 space-y-3">
+                {project.solved.map((item) => (
+                  <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
+                    <span aria-hidden className="text-accent/70">
+                      ·
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
           ) : null}
           {project.learned.length ? (
-          <section>
-            <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              what I learned
-            </h2>
-            <ul className="mt-5 space-y-3">
-              {project.learned.map((item) => (
-                <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
-                  <span aria-hidden className="text-accent/70">
-                    ·
-                  </span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
+            <section>
+              <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                what I learned
+              </h2>
+              <ul className="mt-5 space-y-3">
+                {project.learned.map((item) => (
+                  <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
+                    <span aria-hidden className="text-accent/70">
+                      ·
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
           ) : null}
         </div>
 
+        <RelatedTab related={project.related} />
 
         <div className="mt-20 border-t border-border/60 pt-8">
           <Link
