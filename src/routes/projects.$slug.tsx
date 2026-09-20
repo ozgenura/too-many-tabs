@@ -30,6 +30,13 @@ export const Route = createFileRoute("/projects/$slug")({
         : `${project.name} — ${SITE_NAME}${suffix}`;
     const description = project.blurb;
     const url = absoluteUrl(`/projects/${project.slug}`);
+    // A project with a screenshot previews as that screenshot, not as the
+    // site's card. Shared on its own, a project link is about the thing, and
+    // the site-wide image says nothing that the title has not already said.
+    // Screenshots are 16:9, which clears the 1200x627 minimum every social
+    // preview applies before it will render the image large.
+    const shot = getScreenshots(project)[0];
+    const ogImage = shot ? absoluteUrl(shot.url) : null;
     return {
       meta: [
         { title },
@@ -38,7 +45,16 @@ export const Route = createFileRoute("/projects/$slug")({
         { property: "og:description", content: description },
         { property: "og:type", content: "article" },
         { property: "og:url", content: url },
-        { name: "twitter:card", content: "summary" },
+        ...(ogImage
+          ? [
+              { property: "og:image", content: ogImage },
+              { property: "og:image:width", content: "1600" },
+              { property: "og:image:height", content: "900" },
+              { property: "og:image:alt", content: `${project.name} — ${shot!.label}` },
+              { name: "twitter:image", content: ogImage },
+            ]
+          : []),
+        { name: "twitter:card", content: "summary_large_image" },
       ],
       links: [{ rel: "canonical", href: url }],
       scripts: [
